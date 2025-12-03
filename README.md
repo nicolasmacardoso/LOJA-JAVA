@@ -1,23 +1,25 @@
+🍕 API de Pizzaria / Delivery
 
-🍕 API Pizzaria / Delivery
-API REST desenvolvida em Spring Boot para gerenciamento de pizzaria e sistema de delivery.
+API REST desenvolvida em Spring Boot, projetada para gerenciamento completo de pizzaria e sistema de entregas.
 
-📋 Sobre o Projeto
-Sistema completo para gerenciar:
+📋 Visão Geral
 
-👥 Cadastro e gerenciamento de clientes
+Este projeto oferece uma solução completa para operações de pizzarias, permitindo:
 
-🍽️ Cadastro de produtos (pizzas, bebidas, sobremesas) com controle de disponibilidade
+👥 Cadastro e gestão de clientes
+
+🍽️ Administração de produtos (pizzas, bebidas, sobremesas)
 
 📦 Criação e acompanhamento de pedidos
 
-🚴 Atribuição de entregadores para delivery
+🚴 Gerenciamento de entregadores
 
 💰 Cálculo automático de valores
 
 📊 Histórico de pedidos
 
-🛠️ Tecnologias
+🛠 Tecnologias Utilizadas
+
 Java 17
 
 Spring Boot 3.2.0
@@ -37,42 +39,48 @@ MapStruct
 Springdoc OpenAPI (Swagger)
 
 📁 Estrutura do Projeto
-text
 com.exemplo.pizzaria
 ├── config
 ├── domain
 │   ├── entity          # Entidades JPA
 │   ├── repository      # Repositórios
-│   ├── service         # Lógica de negócio
-│   ├── exception       # Exceções customizadas
+│   ├── service         # Regras de negócio
+│   ├── exception       # Exceções personalizadas
 │   └── enums           # Enumeradores
 ├── dto
 │   ├── request         # DTOs de entrada
 │   └── response        # DTOs de saída
-├── mapper              # MapStruct mappers
-└── resource           # Controllers REST
+├── mapper              # Mapeamento com MapStruct
+└── resource            # Controladores REST
+
 🚀 Como Executar
 Pré-requisitos
-Java 17 ou superior
 
-Maven 3.6+
+Java 17+
+
+Maven 3.6+ ou Gradle
 
 Passos
-Clone o repositório (ou extraia o arquivo ZIP)
 
-Navegue até o diretório do projeto
+Clone o repositório ou extraia o ZIP
 
-bash
+Acesse a pasta do projeto:
+
 cd back-end
-Execute a aplicação
 
-bash
+
+Execute a aplicação:
+
+Maven
+
 mvn spring-boot:run
-Ou usando Gradle:
 
-bash
+
+Gradle
+
 ./gradlew bootRun
-Acesse a aplicação
+
+Acesso
 
 API: http://localhost:8080
 
@@ -86,63 +94,40 @@ Usuário: sa
 
 Senha: (vazio)
 
-🔌 Endpoints da API
-Base URL: http://localhost:8080/api/v1
-
+🔌 Endpoints
+Base URL: /api/v1
 👥 Clientes
-GET /clientes - Lista todos os clientes
-
-GET /clientes/{id} - Busca cliente por ID
-
-POST /clientes - Cria novo cliente
-
-PUT /clientes/{id} - Atualiza cliente
-
-DELETE /clientes/{id} - Deleta cliente
-
+Método	Endpoint	Descrição
+GET	/clientes	Lista todos
+GET	/clientes/{id}	Busca por ID
+POST	/clientes	Cria cliente
+PUT	/clientes/{id}	Atualiza
+DELETE	/clientes/{id}	Remove
 🍽️ Produtos
-GET /produtos - Lista todos os produtos
-
-GET /produtos/disponiveis - Lista produtos disponíveis
-
-GET /produtos/{id} - Busca produto por ID
-
-POST /produtos - Cria novo produto
-
-PUT /produtos/{id} - Atualiza produto
-
-DELETE /produtos/{id} - Deleta produto
-
+Método	Endpoint	Descrição
+GET	/produtos	Lista todos
+GET	/produtos/disponiveis	Lista apenas disponíveis
+GET	/produtos/{id}	Busca por ID
+POST	/produtos	Cria
+PUT	/produtos/{id}	Atualiza
+DELETE	/produtos/{id}	Remove
 🚴 Entregadores
-GET /entregadores - Lista todos os entregadores
-
-GET /entregadores/disponiveis - Lista entregadores disponíveis
-
-GET /entregadores/{id} - Busca entregador por ID
-
-POST /entregadores - Cria novo entregador
-
-PUT /entregadores/{id} - Atualiza entregador
-
+Método	Endpoint	Descrição
+GET	/entregadores	Lista todos
+GET	/entregadores/disponiveis	Lista disponíveis
+GET	/entregadores/{id}	Busca
+POST	/entregadores	Cria
+PUT	/entregadores/{id}	Atualiza
 📦 Pedidos
-GET /pedidos - Lista todos os pedidos
-
-GET /pedidos/{id} - Busca pedido por ID
-
-POST /pedidos - Cria novo pedido
-
-PUT /pedidos/{id} - Atualiza pedido (status e entregador)
-
-PUT /pedidos/{id}/status?status=STATUS - Atualiza apenas o status
-
-DELETE /pedidos/{id} - Deleta pedido (apenas se CANCELADO)
-
-📝 Exemplos de Requisições
+Método	Endpoint	Descrição
+GET	/pedidos	Lista
+GET	/pedidos/{id}	Busca por ID
+POST	/pedidos	Cria novo pedido
+PUT	/pedidos/{id}	Atualiza (status/entregador)
+PUT	/pedidos/{id}/status?status=STATUS	Atualiza status
+DELETE	/pedidos/{id}	Remove (somente CANCELADO)
+📝 Exemplos de Requisição
 Criar Cliente
-json
-POST /api/v1/clientes
-Content-Type: application/json
-
 {
   "nome": "João Silva",
   "cpf": "123.456.789-00",
@@ -150,11 +135,8 @@ Content-Type: application/json
   "email": "joao@email.com",
   "endereco": "Rua das Flores, 123, Centro"
 }
-Criar Produto
-json
-POST /api/v1/produtos
-Content-Type: application/json
 
+Criar Produto
 {
   "nome": "Pizza Calabresa",
   "descricao": "Calabresa, cebola, mussarela e orégano",
@@ -162,95 +144,81 @@ Content-Type: application/json
   "categoria": "PIZZA",
   "disponivel": true
 }
-Criar Pedido
-json
-POST /api/v1/pedidos
-Content-Type: application/json
 
+Criar Pedido
 {
   "clienteId": 1,
   "isDelivery": true,
   "taxaEntrega": 5.00,
   "itens": [
-    {
-      "produtoId": 1,
-      "quantidade": 2
-    },
-    {
-      "produtoId": 6,
-      "quantidade": 1
-    }
+    { "produtoId": 1, "quantidade": 2 },
+    { "produtoId": 6, "quantidade": 1 }
   ]
 }
-Atualizar Status do Pedido
-text
+
+Atualizar Status
 PUT /api/v1/pedidos/1/status?status=PREPARANDO
-Atualizar Pedido (Status + Entregador)
-json
-PUT /api/v1/pedidos/1
-Content-Type: application/json
 
-{
-  "entregadorId": 1,
-  "status": "SAIU_ENTREGA"
-}
 ⚙️ Regras de Negócio
-Criação de Pedido:
+Criar Pedido
 
-Valida se todos os produtos estão disponíveis
+Valida disponibilidade dos produtos
 
-Calcula automaticamente o subtotal de cada item
+Calcula subtotal por item
 
-Calcula o total do pedido (soma dos itens + taxa de entrega)
+Soma total + taxa de entrega
 
-Exclusão de Pedido:
+Exclusão
 
-Apenas pedidos com status CANCELADO podem ser deletados
+Só permite excluir pedidos CANCELADOS
 
-Atualização de Status:
+Atualização de Status
 
-Não é possível alterar status de pedidos ENTREGUE ou CANCELADO
+IMPOSSÍVEL alterar status de ENTREGUE ou CANCELADO
 
-Fluxo sugerido: PENDENTE → PREPARANDO → SAIU_ENTREGA → ENTREGUE
+Fluxo recomendado:
+PENDENTE → PREPARANDO → SAIU_ENTREGA → ENTREGUE
 
-Validações:
+Validações
 
-CPF e Email únicos para clientes
+CPF e e-mail únicos
 
-Produtos indisponíveis não podem ser adicionados ao pedido
+Produto indisponível não pode ser adicionado
 
-Entregador deve estar disponível para ser atribuído
+Entregador deve estar disponível
 
 🗃️ Modelo de Dados
-Entidades Principais
-Cliente: Dados do cliente (nome, CPF, telefone, email, endereço)
+Entidades
 
-Produto: Produtos do cardápio (nome, descrição, preço, categoria, disponibilidade)
+Cliente
 
-Entregador: Dados do entregador (nome, telefone, disponibilidade)
+Produto
 
-Pedido: Pedido do cliente (cliente, entregador, itens, status, total)
+Entregador
 
-ItemPedido: Item do pedido (produto, quantidade, preço unitário, subtotal)
+Pedido
+
+ItemPedido
 
 Relacionamentos
-Cliente 1 --- * Pedido
 
-Entregador 1 --- * Pedido
+Cliente 1 → * Pedido
 
-Pedido 1 --- * ItemPedido
+Entregador 1 → * Pedido
 
-Produto 1 --- * ItemPedido
+Pedido 1 → * ItemPedido
+
+Produto 1 → * ItemPedido
 
 Enums
+
 StatusPedido: PENDENTE, PREPARANDO, SAIU_ENTREGA, ENTREGUE, CANCELADO
 
 Categoria: PIZZA, BEBIDA, SOBREMESA
 
-🧪 Dados de Teste
-O projeto já vem com dados iniciais carregados automaticamente:
+🧪 Dados de Teste (pré-carregados)
 
-3 clientes de exemplo
+3 clientes
 
 3 entregadores (2 disponíveis)
 
@@ -260,10 +228,10 @@ O projeto já vem com dados iniciais carregados automaticamente:
 
 3 sobremesas
 
-⚠️ Tratamento de Erros
-A API retorna erros padronizados:
+⚠️ Erros e Respostas
 
-json
+Exemplo:
+
 {
   "timestamp": "2025-01-30T20:00:00",
   "status": 400,
@@ -273,51 +241,52 @@ json
     "campo": "Erro específico do campo"
   }
 }
-Códigos HTTP:
-200 - Sucesso
 
-201 - Criado
 
-400 - Bad Request (validação)
+Códigos HTTP relevantes:
 
-404 - Not Found
+200 – OK
 
-409 - Conflict (violação de integridade)
+201 – Criado
 
-500 - Internal Server Error
+400 – Erro de validação
 
-⚙️ Configuração
-application.properties
-O arquivo está configurado para usar H2 em memória. Para usar PostgreSQL em produção:
+404 – Não encontrado
 
-properties
+409 – Conflito
+
+500 – Erro interno
+
+⚙️ Configuração (PostgreSQL – Produção)
 spring.datasource.url=jdbc:postgresql://localhost:5432/pizzaria
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
 📚 Documentação
-A documentação completa da API está disponível via Swagger:
 
 Swagger UI: http://localhost:8080/swagger-ui.html
 
 OpenAPI JSON: http://localhost:8080/api-docs
 
 💻 Desenvolvimento
-Projeto desenvolvido para trabalho acadêmico, seguindo boas práticas:
 
-🏗️ Arquitetura em camadas
+Este projeto segue boas práticas:
 
-📦 DTOs para isolamento de entidades
+Arquitetura em camadas
 
-🔄 Mappers (MapStruct) para conversão
+DTOs para isolamento
 
-✅ Validações com Bean Validation
+MapStruct para mapeamento
 
-🎯 Tratamento centralizado de exceções
+Validações com Bean Validation
 
-📋 Regras de negócio nos services
+Exceptions centralizadas
 
-🔢 Versionamento de API (/api/v1)
+Regras nos services
+
+Versionamento /api/v1
 
 📄 Licença
-Este projeto foi desenvolvido para fins acadêmicos.
+
+Projeto desenvolvido para fins acadêmicos.
