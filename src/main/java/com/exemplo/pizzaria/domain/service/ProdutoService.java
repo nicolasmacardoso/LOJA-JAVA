@@ -1,6 +1,7 @@
 package com.exemplo.pizzaria.domain.service;
 
 import com.exemplo.pizzaria.domain.entity.Produto;
+import com.exemplo.pizzaria.domain.exception.BadRequestException;
 import com.exemplo.pizzaria.domain.exception.EntityNotFoundException;
 import com.exemplo.pizzaria.domain.repository.ProdutoRepository;
 import com.exemplo.pizzaria.dto.request.ProdutoRequestDTO;
@@ -55,6 +56,14 @@ public class ProdutoService {
     public void delete(Long id) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Produto", id));
+
+        // VALIDAÇÃO: Impedir deleção se tiver itens de pedido
+        if (produto.getItensPedido() != null && !produto.getItensPedido().isEmpty()) {
+            throw new BadRequestException(
+                    String.format("Não é possível deletar o produto '%s'. Existem pedidos associados a este produto.",
+                            produto.getNome())
+            );
+        }
         produtoRepository.delete(produto);
     }
     

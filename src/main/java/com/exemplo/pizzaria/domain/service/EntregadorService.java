@@ -1,6 +1,7 @@
 package com.exemplo.pizzaria.domain.service;
 
 import com.exemplo.pizzaria.domain.entity.Entregador;
+import com.exemplo.pizzaria.domain.exception.BadRequestException;
 import com.exemplo.pizzaria.domain.exception.EntityNotFoundException;
 import com.exemplo.pizzaria.domain.repository.EntregadorRepository;
 import com.exemplo.pizzaria.dto.request.EntregadorRequestDTO;
@@ -63,5 +64,24 @@ public class EntregadorService {
         return entregadorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Entregador", id));
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Entregador entregador = entregadorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entregador", id));
+
+        // VALIDAÇÃO: Impedir deleção se tiver pedidos
+        if (entregador.getPedidos() != null && !entregador.getPedidos().isEmpty()) {
+            throw new BadRequestException(
+                    String.format("Não é possível deletar o entregador '%s'. Existem %d pedido(s) associado(s).",
+                            entregador.getNome(),
+                            entregador.getPedidos().size())
+            );
+        }
+
+        entregadorRepository.delete(entregador);
+    }
+
+
 }
 

@@ -45,5 +45,11 @@ public class EntregadorResource {
             @Valid @RequestBody EntregadorRequestDTO dto) {
         return ResponseEntity.ok(entregadorService.update(id, dto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        entregadorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 

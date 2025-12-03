@@ -37,17 +37,17 @@ public class ClienteService {
     
     @Transactional
     public ClienteResponseDTO create(ClienteRequestDTO dto) {
-        // ValidaÁ„o de CPF ˙nico
+        // ValidaÔøΩÔøΩo de CPF ÔøΩnico
         if (dto.getCpf() != null && !dto.getCpf().isEmpty()) {
             if (clienteRepository.existsByCpf(dto.getCpf())) {
-                throw new BadRequestException("CPF j· cadastrado");
+                throw new BadRequestException("CPF jÔøΩ cadastrado");
             }
         }
         
-        // ValidaÁ„o de email ˙nico
+        // ValidaÔøΩÔøΩo de email ÔøΩnico
         if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
             if (clienteRepository.existsByEmail(dto.getEmail())) {
-                throw new BadRequestException("Email j· cadastrado");
+                throw new BadRequestException("Email jÔøΩ cadastrado");
             }
         }
         
@@ -61,17 +61,17 @@ public class ClienteService {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente", id));
         
-        // ValidaÁ„o de CPF ˙nico (se alterado)
+        // ValidaÔøΩÔøΩo de CPF ÔøΩnico (se alterado)
         if (dto.getCpf() != null && !dto.getCpf().isEmpty() && !dto.getCpf().equals(cliente.getCpf())) {
             if (clienteRepository.existsByCpf(dto.getCpf())) {
-                throw new BadRequestException("CPF j· cadastrado");
+                throw new BadRequestException("CPF jÔøΩ cadastrado");
             }
         }
         
-        // ValidaÁ„o de email ˙nico (se alterado)
+        // ValidaÔøΩÔøΩo de email ÔøΩnico (se alterado)
         if (dto.getEmail() != null && !dto.getEmail().isEmpty() && !dto.getEmail().equals(cliente.getEmail())) {
             if (clienteRepository.existsByEmail(dto.getEmail())) {
-                throw new BadRequestException("Email j· cadastrado");
+                throw new BadRequestException("Email jÔøΩ cadastrado");
             }
         }
         
@@ -84,6 +84,15 @@ public class ClienteService {
     public void delete(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente", id));
+
+        // VALIDA√á√ÉO: Impedir dele√ß√£o se tiver pedidos
+        if (cliente.getPedidos() != null && !cliente.getPedidos().isEmpty()) {
+            throw new BadRequestException(
+                    String.format("N√£o √© poss√≠vel deletar o cliente '%s'. Existem %d pedido(s) associado(s) a este cliente.",
+                            cliente.getNome(),
+                            cliente.getPedidos().size())
+            );
+        }
         clienteRepository.delete(cliente);
     }
     

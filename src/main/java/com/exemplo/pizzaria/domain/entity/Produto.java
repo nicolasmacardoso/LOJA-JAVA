@@ -37,7 +37,7 @@ public class Produto {
     @Column(nullable = false)
     private Boolean disponivel = true;
     
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "produto")
     private List<ItemPedido> itensPedido = new ArrayList<>();
 }
 

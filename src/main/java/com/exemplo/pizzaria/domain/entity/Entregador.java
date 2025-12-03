@@ -28,7 +28,7 @@ public class Entregador {
     @Column(nullable = false)
     private Boolean disponivel = true;
     
-    @OneToMany(mappedBy = "entregador", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entregador")
     private List<Pedido> pedidos = new ArrayList<>();
 }
 
